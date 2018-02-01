@@ -1,0 +1,6 @@
+<div id="__hash__" class="item">
+	<h3 class="title"><a class="title" href="#__hash__">__title__</a> <span class="feed">__feed__</span> <a href="__url__">&raquo;</a></h3>
+	<div class="hidden" data-link="__url__">
+		__description__
+	</div>
+</div>

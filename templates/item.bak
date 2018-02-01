@@ -1,0 +1,5 @@
+<details class='item', data-link='__url__'>
+	<summary>__title_no_link__ <span class='feed'>__feed_title_no_link__</span></summary>
+	__description__
+	<h6>__title__</h6>
+</details>

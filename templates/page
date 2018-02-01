@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>feeds</title>
+
+<style>
+body {
+	margin: 1%;
+	overflow-y: scroll;
+	background: #f6f5f0;
+	font-family: sans-serif;
+	line-height: 1.8em;
+}
+a { text-decoration: none; }
+a:link { color: #08b; }
+a:visited, a:hover { color: #a03; }
+h2 {
+	margin: 0.2em 0 0 0;
+	color: #aaa;
+	font-size: 100%;
+}
+.date {
+	font-size: 140%;
+	font-weight: bold;
+}
+.title {
+	font-size: 100%;
+	font-weight: normal;
+	margin: 0;
+}
+blockquote {
+	border-left: solid #bbb;
+	margin: 0;
+	padding: 0 40px;
+}
+#gen {
+	display: inline-block;
+	font-size: 60%;
+	color: gray;
+}
+#page {
+	width: 60em;
+	max-width: 100%;
+	margin-left: auto;
+	margin-right: auto;
+}
+.vid { width: 100%; }
+img { max-width: 100%; }
+#version {
+	border-top: solid black 1px;
+	padding-top: 1em;
+	margin-top: 1em;
+}
+
+.hidden { display: none; }
+.item:target {
+	background: #FCFBF7;
+	padding: 1em 0;
+}
+:target .hidden {
+	display: block;
+}
+:target .title {
+	font-size: 140%;
+	padding-bottom: 0.5em;
+}
+
+.vid { display: none; }
+:target .vid { display: block; }
+
+@media only screen and (min-width: 500px) {
+	.item:target { padding: 2em; }
+	.vid { max-width: 35em; }
+	img { max-width: 35em; }
+}
+</style>
+<script>
+document.onkeypress = function(e) {
+	e = e || window.event;
+	var charCode = (typeof e.which == "number") ? e.which : e.keyCode;
+	var el = document.getElementById(location.hash.slice(1));
+	var newhash = '';
+	if (!el) {
+		console.log('First');
+		newhash = document.getElementsByClassName('item')[0].id;
+	} else if (charCode == 106) {
+		console.log('Next');
+		newhash = el.nextElementSibling.id
+		if (!newhash) {
+			newhash = el.nextElementSibling.nextElementSibling.id;
+		}
+	} else if (charCode == 107) {
+		console.log('Previous');
+		newhash = el.previousElementSibling.id;
+		if (!newhash) {
+			newhash = el.previousElementSibling.previousElementSibling.id;
+		}
+	}
+	location.hash = newhash;
+};
+
+window.onhashchange = function() {
+	if (location.hash == '') { return }
+	var hash = location.hash.slice(1);
+	var item = document.getElementById(hash)
+	var hid = item.children[1];
+	var link = hid.dataset.link;
+	if (link && link.indexOf('youtube.com/watch') > 0) {
+		link = link.replace('youtube.com/watch?v=', 'youtube-nocookie.com/embed/');
+		console.log(link);
+		var ifr = document.createElement('p');
+		ifr.setAttribute('class', 'vid');
+		ifr.innerHTML = '<iframe width="560" height="315" src="'+link+
+			'?rel=0" frameborder="0" allowfullscreen></iframe>';
+		item.insertBefore(ifr, item.children[1]);
+	}
+}
+
+</script>
+</head>
+<body id="rawdog">
+	<div id="page">
+		<h1>__num_items__ items from __num_feeds__ feeds <span id="gen">__generated__</span></h1>
+		<div id="items">
+			__items__
+		</div>
+	</div>
+</body>
+</html>

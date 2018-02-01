@@ -1,0 +1,8 @@
+<div class="item" id="__hash__" data-link="__url__">
+	<div class="title" onclick="uncomment(this)">__title__</div>
+	<div class="feed">__feed__</div>
+	<div class="entry"><!--RAWDOG
+		<h2><a href="__url__">__title__</a></h2>
+		__description__
+	RAWDOG--></div>
+</div>

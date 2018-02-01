@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>feeds</title>
+
+<style>
+body {
+	margin: 1%;
+	overflow-y: scroll;
+	background: #f6f5f0;
+	font-family: sans-serif;
+	line-height: 1.8em;
+}
+a { text-decoration: none; }
+a:link { color: #08b; }
+a:visited, a:hover { color: #a03; }
+h2 { 
+	margin: 0.2em 0 0 0;
+	color: #aaa;
+}
+blockquote {
+	border-left: solid #bbb;
+	margin: 0;
+	padding: 0 40px;
+}
+#gen {
+	display: inline-block;
+	font-size: 60%;
+	color: gray;
+}
+#page {
+	width: 60em;
+	max-width: 100%;
+	margin-left: auto;
+	margin-right: auto;
+}
+.item {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+}
+.date {
+	order: 1;
+	width: 10em;
+	font-size: 60%;
+	color: gray;
+}
+.feed {
+	order: 2;
+	font-size: 60%;
+	color: #08b;
+}
+.title {
+	order: 3;
+	cursor: pointer;
+	padding-bottom: 20px;
+	flex-basis: 100%;
+	line-height: 1em;
+}
+.vid { width: 100%; }
+img { max-width: 100%; }
+.entry {
+	order: 4;
+	display: none;
+	background: #fcfbf7;
+	width: 100%;
+	margin-bottom: 2em;
+}
+#version {
+	border-top: solid black 1px;
+	padding-top: 1em;
+	margin-top: 1em;
+}
+#allvids {
+	 display: block;
+	 width: 60em;
+	 height: 34em;
+	 max-width: 95vw;
+	 max-height: 95vh;
+ }
+.toast {
+	position: fixed;
+	left: 50%;
+	top: 95%;
+	background: #000d;
+	transform: translate(-50%,-50%);
+	padding: 1em 2em;
+	border-radius: 0.5em;
+	color: white;
+	opacity: 0;
+	animation: fadeInOut 2s linear 1 forwards;
+}
+@keyframes fadeInOut {
+	0% { opacity: 0; }
+	20% { opacity: 1; }
+	80% { opacity: 1; }
+	100% { opacity: 0; }
+}
+
+@media only screen and (min-width: 500px) {
+	.date { order: 1; }
+	.feed { order: 3; }
+	.title {
+		order: 2;
+		flex-basis: auto;
+		padding: 0 0.3em 0.3em 0.3em;
+	}
+	.entry {
+		order: 4;
+		padding: 1em;
+		box-shadow: 3px 3px 4px #ddd;
+	}
+	.vid { max-width: 35em; }
+	img { max-width: 35em; }
+}
+</style>
+<script>
+var cur = -1;
+var list;
+
+document.onkeypress = function(evt) {
+	if (! list) {
+		list = document.getElementsByClassName('item');
+	}
+
+	for (i=0; i<list.length; i++) {
+		if (list[i].isOpen) {
+			cur = i;
+			break;
+		}
+	}
+
+	evt = evt || window.event;
+	var charCode = evt.keyCode || evt.which;
+	switch (charCode) {
+		case 27: // Esc
+			closeAll();
+			cur=-1;
+			window.scrollTo(0,0);
+			break;
+		case 71: openN(list.length-1); break; // G
+		case 103: openN(0); break; // g
+		case 106: openN(cur+1); break; // j
+		case 107: openN(cur-1); break; // k
+		//default: alert(charCode);
+	}
+};
+
+function closeAll() {
+	console.log('closeAll');
+	if (! list) {
+		list = document.getElementsByClassName('item');
+	}
+	for (i=0; i<list.length; i++) {
+		close(list[i]);
+	}
+}
+
+function openN(dir) {
+	console.log('openN');
+	cur = dir;
+	if (cur < 0) {
+		cur = 0;
+		showToast('Reached first item.');
+	} else if (cur >= list.length) {
+		cur = list.length-1;
+		showToast('Reached last item.');
+	} else {
+		closeAll();
+		if (list[cur]) {
+			open(list[cur]);
+		}
+	}
+}
+
+function uncomment(n) {
+	console.log('uncomment');
+	var node = n.parentElement;
+	if (node.isOpen) {
+		closeAll();
+	} else {
+		open(node);
+	}
+}
+
+function open(node) {
+	console.log('open');
+	closeAll();
+	var link = node.dataset.link
+	if (~link.indexOf('youtube.com/watch')) {
+		convert_youtube(node);
+	}
+	var el = node.getElementsByClassName('entry')[0]
+	el.innerHTML = el.innerHTML.replace('<!--RAWDOG','').replace('RAWDOG-->','');
+	el.style.display = 'block';
+	node.isOpen = true;
+	window.scrollTo(0, node.offsetTop);
+}
+
+function close(node) {
+	console.log('close');
+	var el = node.getElementsByClassName('entry')[0]
+	var link = node.dataset.link
+	if (~link.indexOf('youtube.com/watch')) {
+		el.innerHTML = null;
+	}
+	el.style.display = 'none';
+	node.isOpen = false;
+}
+
+function showToast(str) {
+	console.log('[Toast]:'+str);
+	var toast = document.createElement('div');
+	toast.className = 'toast';
+	var text = document.createTextNode(str);
+	toast.appendChild(text);
+	console.log(toast);
+	document.body.appendChild(toast);
+
+	setTimeout(function () {
+		toast.remove();
+	}, 4000);
+}
+
+function convert_youtube(node) {
+	var link = node.dataset.link
+	link = link.replace('youtube.com/watch?v=', 'youtube-nocookie.com/embed/')
+	var newhtml='<iframe class="vid" width="560" height="315" src="'+link+'?rel=0" frameborder="0" allowfullscreen></iframe>'
+	//node.children[3].innerHTML = newhtml;
+	node.getElementsByClassName('entry')[0].innerHTML = newhtml;
+}
+
+</script>
+</head>
+<body id="rawdog">
+	<div id="page">
+		<h1>__num_items__ items from __num_feeds__ feeds <span id="gen">__generated__</span></h1>
+		<div id="items">
+			__items__
+		</div>
+	</div>
+</body>
+</html>
