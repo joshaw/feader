@@ -1,0 +1,4 @@
+return {
+['.*youtube.com/watch.*'] = dofile('extractors/youtube.lua'),
+['.*www.bbc.co.uk/programmes/.*'] = dofile('extractors/bbc_audio.lua'),
+}

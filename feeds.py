@@ -1,5 +1,5 @@
 # Created:  Sat 11 Nov 2017
-# Modified: Tue 30 Jan 2018
+# Modified: Tue 05 Jun 2018
 # Author:   Josh Wainwright
 # Filename: feeds.py
 
@@ -19,9 +19,9 @@ sys.stdout.write(slug + '\t' + d.feed.title + '\t' + feed_url + '\n')
 
 lines = []
 lines.append('return {')
-lines.append('  title=[==[{}]==],'.format(d.feed.title))
-lines.append('  link="{}",'.format(d.feed.link))
-lines.append('  posts={')
+lines.append(' title=[==[{}]==],'.format(d.feed.title))
+lines.append(' link="{}",'.format(d.feed.link))
+lines.append(' posts={')
 
 for post in d.entries:
 	lines.append('    {')
@@ -36,15 +36,20 @@ for post in d.entries:
 
 	if date:
 		secs = int(time.mktime(date))
+		lines.append('  secs={},'.format(secs))
 
-	lines.append('      secs={},'.format(secs))
-	lines.append('      title=[==[{}]==],'.format(post.title))
-	lines.append('      url=[==[{}]==],'.format(post.link))
-	lines.append('      hash="{}",'.format(getslug(post.link)))
-	lines.append('      description=[==[{}]==],'.format(post.summary))
-	lines.append('    },')
+	lines.append('  title=[==[{}]==],'.format(post.title))
+	lines.append('  url=[==[{}]==],'.format(post.link))
+	lines.append('  hash="{}",'.format(getslug(post.link)))
+	lines.append('  description=[==[{}]==],'.format(post.summary))
 
-lines.append('  }')
+	media_content = post.get('media_content')
+	if media_content and media_content[0].get('url'):
+		lines.append('  media_content="{}",'.format(media_content[0].get('url')))
+
+	lines.append('  },')
+
+lines.append(' }')
 lines.append('}')
 
 f = open('feeds/feed-'+slug, 'w')

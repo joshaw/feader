@@ -21,6 +21,15 @@ h2 {
 	color: #aaa;
 	font-size: 100%;
 }
+pre {
+	background: #f6f5f0;
+	padding: 0.2em 1em;
+	border: solid 1px #cbc9c4;
+	border-radius: 5px
+}
+code {
+	white-space: pre-wrap;
+}
 .date {
 	font-size: 140%;
 	font-weight: bold;
@@ -82,10 +91,7 @@ document.onkeypress = function(e) {
 	var charCode = (typeof e.which == "number") ? e.which : e.keyCode;
 	var el = document.getElementById(location.hash.slice(1));
 	var newhash = '';
-	if (!el) {
-		console.log('First');
-		newhash = document.getElementsByClassName('item')[0].id;
-	} else if (charCode == 106) {
+	if (charCode == 106) {
 		console.log('Next');
 		newhash = el.nextElementSibling.id
 		if (!newhash) {
@@ -97,11 +103,14 @@ document.onkeypress = function(e) {
 		if (!newhash) {
 			newhash = el.previousElementSibling.previousElementSibling.id;
 		}
+	} else {
+		return
 	}
 	location.hash = newhash;
 };
 
-window.onhashchange = function() {
+/*
+function showvid() {
 	if (location.hash == '') { return }
 	var hash = location.hash.slice(1);
 	var item = document.getElementById(hash)
@@ -118,14 +127,18 @@ window.onhashchange = function() {
 	}
 }
 
+window.onhashchange = showvid;
+window.onload = showvid;
+*/
 </script>
 </head>
 <body id="rawdog">
 	<div id="page">
-		<h1>__num_items__ items from __num_feeds__ feeds <span id="gen">__generated__</span></h1>
+		<h1><a href="#">__num_items__ items from __num_feeds__ feeds</a> <span id="gen">__generated__</span></h1>
 		<div id="items">
 			__items__
 		</div>
+		<p><a href='all_posts.html'>All Posts</a></p>
 	</div>
 </body>
 </html>

@@ -3,7 +3,6 @@ http://feeds.feedburner.com/LifeToHerYears
 http://feeds.feedburner.com/littlebigdetails
 http://rss.timeanddate.com/news-time.rss
 http://sarahcandersen.com/rss
-http://www.smbc-comics.com/rss.php
 https://feeds.feedburner.com/codinghorror
 https://neovim.io/news.xml
 https://openlp.org/rss.xml
@@ -16,6 +15,14 @@ https://www.archlinux.org/feeds/news/
 https://www.destroyallsoftware.com/screencasts/feed
 https://www.destroyallsoftware.com/blog/index.xml
 https://www.freefullrss.com/feed.php?url=https%3A%2F%2Fwww.troyhunt.com%2Frss%2F&max=10
+https://pi-hole.net/feed/
+
+# Friday Night Comedy
+http://podcasts.files.bbci.co.uk/p02pc9pj.rss
+# Infinite Monkey Cage
+http://podcasts.files.bbci.co.uk/b00snr0w.rss
+# Comedy Election Podcast
+http://podcasts.files.bbci.co.uk/p0539l31.rss
 
 # colinfurze
 https://www.youtube.com/feeds/videos.xml?channel_id=UCp68_FLety0O-n9QU6phsgw
@@ -79,3 +86,5 @@ https://www.youtube.com/feeds/videos.xml?channel_id=UCivA7_KLKWo43tFcCkFvydw
 https://www.youtube.com/feeds/videos.xml?channel_id=UCErSSa3CaP_GJxmFpdjG9Jw
 # 3Blue1Brown
 https://www.youtube.com/feeds/videos.xml?channel_id=UCYO_jab_esuFRV4b17AJtAw
+# Mathologer
+https://www.youtube.com/feeds/videos.xml?channel_id=UC1_uAIS3r8Vu6JjXWvastJg
